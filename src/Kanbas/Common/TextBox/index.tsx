@@ -20,7 +20,14 @@ import { setText } from './reducer';
 import Quiz from '../../Courses/Quizzes';
 import { text } from 'stream/consumers';
 
-const TextEditor: React.FC = () => {
+
+interface TextEditorProps {
+  textData: string; // Define a prop for the API endpoint
+}
+
+
+
+const TextEditor: React.FC <TextEditorProps> = ({ textData })=> {
   const [fontSize, setFontSize] = useState('16px');
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -40,16 +47,28 @@ const TextEditor: React.FC = () => {
   //const initialText = useSelector((state: { textReducer: { text: { data: string } } }) => state.textReducer.text.data);
 
 
-  const initial = useSelector(
-    (state: KanbasState) => state.textReducer.text.instructions
-  );
 
+
+  const initial = useSelector((state: KanbasState) => textData);
   console.log(initial)
+
+
+  
+
+  
   const [textValue, setTextValue] = useState(initial);
-  const handletextChange = (newText: string) => {
-    // Ensure we capture all format states
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = event.target.value;
+    setTextValue(newText);
+    // Dispatch action to update Redux store if needed
     dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
-};
+  };
+
+//   const handletextChange = (newText: string) => {
+//     // Ensure we capture all format states
+//     dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
+// };
 
 // Ensure useEffect is set up correctly to handle updates from the Redux store
 useEffect(() => {
@@ -211,7 +230,7 @@ useEffect(() => {
       </div>
       <br/>
       <textarea id="textInput" placeholder="Enter your text here..." value={textValue}
-  onChange={(e) => handletextChange(e.target.value)} style={{color: textColor , fontSize, fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal', textDecoration: isUnderline ? 'underline' : 'none', verticalAlign: isSuperscript ? 'super' : 'baseline', }}/>
+  onChange={handleTextChange} style={{color: textColor , fontSize, fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal', textDecoration: isUnderline ? 'underline' : 'none', verticalAlign: isSuperscript ? 'super' : 'baseline', }}/>
       <div style={{ display: 'flex', alignItems: 'center' }}>
   <p style={{ margin: 0 }}>p</p>
   <div style={{ marginLeft: 'auto', display: 'flex' }}>

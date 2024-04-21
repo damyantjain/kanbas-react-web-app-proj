@@ -28,11 +28,11 @@ function QuizEditor() {
     );
 
     const text = useSelector(
-      (state: KanbasState) => state.textReducer.text.data
+      (state: KanbasState) => state.textReducer.text.instructions
     );
 
     const handleSave = () => {
-        console.log("Actually saving assignment TBD in later assignments");
+        console.log("text handle save,",text);
         dispatch(updateQuiz({
           ...quiz,
           instructions: text,

@@ -5,7 +5,7 @@ interface Quiz {
   availability: string;
   points: string;
   dueDate: string;
-  id: string;
+  _id: string;
   quizType: string;
   assignmentGroup: string;
 
@@ -35,7 +35,7 @@ const initialState = {
     availability: "",
     description:"",
     numberOfQuestions: "",
-    id: "-1",
+    _id: "-1",
     points: "100",
     quizType: "Graded Quiz",
     assignmentGroup: "Quizzes",
@@ -66,7 +66,7 @@ const quizzesSlice = createSlice({
 
     updateQuiz: (state, action) => {
       state.quizzes = state.quizzes.map((quiz) => {
-        if (quiz.id === action.payload._id) {
+        if (quiz._id === action.payload._id) {
           return action.payload;
         } else {
           return quiz;
@@ -76,7 +76,7 @@ const quizzesSlice = createSlice({
 
     deleteQuiz: (state, action) => {
       state.quizzes = state.quizzes.filter(
-        (quiz) => quiz.id !== action.payload
+        (quiz) => quiz._id !== action.payload
       );
     },
 

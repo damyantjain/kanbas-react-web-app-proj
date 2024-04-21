@@ -94,7 +94,7 @@ function QuestionEditor() {
         their answer.
       </p>
       <h2>Question:</h2>
-      <TextBox />
+      {/*<TextBox />*/ }
       {currentQuestionType}
       <div className="float-end me-2">
         <Button type="button" onClick={()=>dispatch(addOption())} style={{ color: "red", textDecoration: "none" }} className="btn btn-link">
