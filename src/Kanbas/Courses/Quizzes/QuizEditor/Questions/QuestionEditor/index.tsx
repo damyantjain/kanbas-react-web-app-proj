@@ -104,7 +104,7 @@ function QuestionEditor() {
         their answer.
       </p>
       <h2>Question:</h2>
-      <TextBox />
+      {/*<TextBox />*/ }
       {currentQuestionType}
       {!questionType.includes("TrueFalse") && (
         <div className="float-end me-2">

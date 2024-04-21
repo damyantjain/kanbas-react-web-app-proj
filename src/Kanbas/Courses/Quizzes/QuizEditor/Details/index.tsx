@@ -80,7 +80,7 @@ function QuizDetail() {
       />
       <br/>
 
-        <TextEditor/>
+        <TextEditor textData={quiz?.instructions} />
 
         
               <br/>
