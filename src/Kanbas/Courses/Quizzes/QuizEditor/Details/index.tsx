@@ -53,25 +53,9 @@ function QuizDetail() {
 
       
 
-    
-
-
-  //   const assignment = assignments.find(
-  //     (assignment) => assignment._id === assignmentId
-  //   );
-    
-
-
-
-
-
-
     return (
         
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      
-            
-
       <div>
            
       <div id="editor">
