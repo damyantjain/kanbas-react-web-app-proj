@@ -19,25 +19,37 @@ import { updateText } from "../../../Common/TextBox/reducer";
 
 
 function QuizEditor() {
+ 
   const { quizId } = useParams();
   const isAddNew = quizId === "QuizDetail";
     const {courseId}=useParams();
     const navigate = useNavigate();
     const quiz = useSelector(
-      (state: KanbasState) => state.quizReducer.quiz
+      (state: KanbasState) => {
+        console.log("text handle save,",state.quizReducer.quizzes[0]);
+        return state.quizReducer.quizzes[0]}
     );
 
     const text = useSelector(
       (state: KanbasState) => state.textReducer.text.instructions
     );
 
+    
+
+ 
+
+
     const handleSave = () => {
-        console.log("text handle save,",text);
-        dispatch(updateQuiz({
-          ...quiz,
-          instructions: text,
-        }));
-        handleUpdate();
+        console.log("text handle save,",quiz);
+  //      new Promise((resolve,reject)=>{
+        const quizTemp ={...quiz, instructions: text}
+        dispatch(updateQuiz({quizTemp
+        }
+      ))
+        handleUpdate(quizTemp)
+        // setTimeout(handleUpdate,2000)
+      //   setTimeout(()=>resolve(true),2000)
+      // }).then(()=>handleUpdate());
         navigate(`/Kanbas/Courses/${courseId}/quizzes`);
       };
 
@@ -55,9 +67,16 @@ function QuizEditor() {
       .then((q) => dispatch(addQuiz(q)));
   };
 
-  const handleUpdate = async () => {
-    const res = await client.updateQuiz(quiz);
-    dispatch(updateQuiz(quiz));
+  const handleUpdate = async (quizTemp:object) => {
+    // const quiz2 = useSelector(
+    //   (state: KanbasState) => {
+    //     console.log("text handle save,",state.quizReducer.quizzes[0]);
+    //     return state.quizReducer.quizzes[0]}
+    // );
+    console.log("new",)
+    const res = await client.updateQuiz(quizTemp);
+    dispatch(updateQuiz(quizTemp));
+  
   };
 
 

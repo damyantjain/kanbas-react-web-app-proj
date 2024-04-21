@@ -8,6 +8,7 @@ interface Quiz {
   _id: string;
   quizType: string;
   assignmentGroup: string;
+  instructions: string;
 
   shuffleAnswers: boolean;
   timeLimit: String;
@@ -28,6 +29,7 @@ interface Quiz {
 const initialState = {
   quizzes: [] as Quiz[],
   quiz: {
+    instructions:"",
     title: "Unnamed Quiz",
     availability: "",
     description: "",
@@ -74,6 +76,20 @@ const quizzesSlice = createSlice({
       });
     },
 
+    // updateQuiz: (state, action) => {
+    //   const temp=state.quizzes.map((quiz) => {
+    //     if (quiz?._id === action.payload._id) {
+    //       console.log(quiz._id);
+    //       console.log(action.payload);
+    //       return { ...quiz, ...action.payload };
+    //     } else {
+    //       return quiz;
+    //     }
+    //   });
+    //   console.log("teemo",temp)
+    //      state.quizzes = temp;
+    // },
+
     deleteQuiz: (state, action) => {
       state.quizzes = state.quizzes.filter(
         (quiz) => quiz._id !== action.payload
@@ -85,9 +101,11 @@ const quizzesSlice = createSlice({
     },
 
     setQuiz: (state, action) => {
+      console.log("setquiz call",action.payload)
       state.quiz = action.payload;
     },
     setQuizzes: (state, action) => {
+     
       state.quizzes = action.payload;
     },
   },

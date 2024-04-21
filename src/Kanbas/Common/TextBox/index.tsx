@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 //import 'reducer.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { KanbasState } from '../../store';
-import { setText } from './reducer';
+import { setText, updateText } from './reducer';
 import Quiz from '../../Courses/Quizzes';
 import { text } from 'stream/consumers';
 
