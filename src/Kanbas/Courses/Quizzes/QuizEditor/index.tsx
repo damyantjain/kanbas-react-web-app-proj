@@ -15,6 +15,7 @@ import {
 import Quiz from "../..";
 import * as client from "../client";
 import { Button } from "react-bootstrap";
+import { updateText } from "../../../Common/TextBox/reducer";
 
 
 function QuizEditor() {
@@ -26,12 +27,18 @@ function QuizEditor() {
       (state: KanbasState) => state.quizReducer.quiz
     );
 
+    const text = useSelector(
+      (state: KanbasState) => state.textReducer.text.data
+    );
+
     const handleSave = () => {
         console.log("Actually saving assignment TBD in later assignments");
+        dispatch(updateQuiz({
+          ...quiz,
+          instructions: text,
+        }));
         handleUpdate();
         navigate(`/Kanbas/Courses/${courseId}/quizzes`);
-        
-        
       };
 
       const handleSaveAndPublish = () => {

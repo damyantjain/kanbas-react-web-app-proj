@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './index.css';
 import { FaBold} from "react-icons/fa6";
 import { GoItalic } from "react-icons/go";
@@ -13,6 +13,12 @@ import { HiMiniCodeBracket } from "react-icons/hi2";
 import { PiArrowsOutSimple } from "react-icons/pi";
 import { PiDotsSixVertical } from "react-icons/pi";
 import { Link } from 'react-router-dom';
+//import 'reducer.tsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { KanbasState } from '../../store';
+import { setText } from './reducer';
+import Quiz from '../../Courses/Quizzes';
+import { text } from 'stream/consumers';
 
 const TextEditor: React.FC = () => {
   const [fontSize, setFontSize] = useState('16px');
@@ -25,10 +31,56 @@ const TextEditor: React.FC = () => {
   const highlightColorPickerRef = useRef<HTMLInputElement>(null);
   const [isSuperscript, setIsSuperscript] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+  //const textObject = useSelector((state: { textReducer: { text: { data: string } } }) => state.textReducer.text.data);
+
+
+    //const textObject = useSelector((state: any) => state.textReducer.text.data);
+   const dispatch = useDispatch();
+
+  //const initialText = useSelector((state: { textReducer: { text: { data: string } } }) => state.textReducer.text.data);
+
+
+  const initial = useSelector(
+    (state: KanbasState) => state.textReducer.text.instructions
+  );
+
+  console.log(initial)
+  const [textValue, setTextValue] = useState(initial);
+  const handletextChange = (newText: string) => {
+    // Ensure we capture all format states
+    dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
+};
+
+// Ensure useEffect is set up correctly to handle updates from the Redux store
+useEffect(() => {
+    if (initial) setTextValue(initial); // Update local state when the Redux store updates
+}, [initial]);
+
+// Simplify the useEffect for initial load
+useEffect(() => {
+    setTextValue(initial);
+}, []); // Dependency array is empty to act like componentDidMount
+
+    //const textList = useSelector((state: KanbasState) =>
+       // state.quizReducer.quizzes);
+     
+
+      
+
+      
+
+      //const textObject = useSelector((state: { textReducer: { text: { data: string } } }) => state.textReducer.text.data);
   
+  //   useEffect(() => { setText(textObject) }, [textObject]);
+
+  //  const handletextChange=(text: React.SetStateAction<string>)=>{
+  //   setText(text);
+
+  //  };
+
+   
 
   
-
   const toggleBold = () => {
     setIsBold(!isBold);
   };
@@ -158,7 +210,8 @@ const TextEditor: React.FC = () => {
         
       </div>
       <br/>
-      <textarea id="textInput" placeholder="Enter your text here..." style={{color: textColor , fontSize, fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal', textDecoration: isUnderline ? 'underline' : 'none', verticalAlign: isSuperscript ? 'super' : 'baseline', }}/>
+      <textarea id="textInput" placeholder="Enter your text here..." value={textValue}
+  onChange={(e) => handletextChange(e.target.value)} style={{color: textColor , fontSize, fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal', textDecoration: isUnderline ? 'underline' : 'none', verticalAlign: isSuperscript ? 'super' : 'baseline', }}/>
       <div style={{ display: 'flex', alignItems: 'center' }}>
   <p style={{ margin: 0 }}>p</p>
   <div style={{ marginLeft: 'auto', display: 'flex' }}>
