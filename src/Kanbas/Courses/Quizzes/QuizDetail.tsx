@@ -21,6 +21,20 @@ function QuizDetail() {
     (state: KanbasState) => state.quizReducer.quizzes
   );
 
+  const formatDate = (dateString: string | number | Date) => {
+    return new Date(dateString).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+  const formatTime = (dateString: string | number | Date) => {
+    return new Date(dateString).toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  };
+
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -255,10 +269,10 @@ function QuizDetail() {
         </thead>
         <tbody>
           <tr>
-            <td>{quiz.dueDate} </td>
+            <td>{formatDate(quiz.dueDate)} at {formatTime(quiz.dueDate)} </td>
             <td>Everyone</td>
-            <td>{quiz.availableFromDate}</td>
-            <td>{quiz.availableUntilDate}</td>
+            <td>{formatDate(quiz.availableFromDate)} at {formatTime(quiz.availableFromDate)}</td>
+            <td>{formatDate(quiz.availableUntilDate)} at {formatTime(quiz.availableUntilDate)}</td>
           </tr>
         </tbody>
       </table>

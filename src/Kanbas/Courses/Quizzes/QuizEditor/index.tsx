@@ -60,7 +60,7 @@ function QuizEditor() {
 
   return (
     <div>
-      <h2>Hello</h2>
+      
       <Nav />
       <Routes>
         <Route path="/" element={<Navigate to="details" />} />

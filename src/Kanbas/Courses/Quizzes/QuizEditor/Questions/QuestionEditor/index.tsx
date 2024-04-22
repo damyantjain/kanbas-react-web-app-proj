@@ -56,6 +56,10 @@ function QuestionEditor() {
     //navigate back to the question list
   };
 
+  const cancelQues = () => {
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor/questions`);
+  }
+
   const checkType = () => {
     let temp = <></>;
     if (questionType.includes("MultipleChoice")) {
@@ -144,7 +148,7 @@ function QuestionEditor() {
       )}
 
       <br />
-      <Button className="btn btn-secondary">Cancel</Button>
+      <Button className="btn btn-secondary" onClick={()=>{cancelQues()}}>Cancel</Button>
       <Button onClick={() => updateQues()} className="btn btn-danger ms-2">
         Update Question
       </Button>
