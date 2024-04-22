@@ -233,7 +233,6 @@ console.log("text data:",initial)
             }}
           />
           <div style={{ display: "flex", alignItems: "center" }}>
-            <p style={{ margin: 0 }}>p</p>
             <div style={{ marginLeft: "auto", display: "flex" }}>
               <span>
                 <FaRegKeyboard style={{ color: "red" }} />
