@@ -3,23 +3,18 @@ import { Link, useParams } from "react-router-dom";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { KanbasState } from "../../store";
-import { setQuiz, updateQuiz } from "./reducer";
-import { useEffect, useState } from "react";
+import { updateSingleQuiz } from "./reducer";
+import { useEffect } from "react";
 import * as client from "./QuizEditor/Questions/client";
 import { setQuestions } from "./QuizEditor/Questions/reducer";
 
 function QuizDetail() {
   const { courseId } = useParams();
   const { quizId } = useParams();
-  const [published, setPublished] = useState(false);
 
   const dispatch = useDispatch();
 
   const quiz = useSelector((state: KanbasState) => state.quizReducer.quiz);
-
-  const quizList = useSelector(
-    (state: KanbasState) => state.quizReducer.quizzes
-  );
 
   const formatDate = (dateString: string | number | Date) => {
     return new Date(dateString).toLocaleString('en-US', {
@@ -35,7 +30,6 @@ function QuizDetail() {
     });
   };
 
-
   useEffect(() => {
     const fetchQuestions = async () => {
       const questions = await client.getAllQuestions(quizId);
@@ -45,16 +39,10 @@ function QuizDetail() {
   }, [quizId]);
 
   const handleTogglePublish = () => {
-    // Toggle the published status
-    dispatch(
-      updateQuiz({
-        ...quiz,
-        published: !quiz.published,
-      })
-    );
-    console.log("Publishing or Unpublishing the quiz");
-    console.log(quiz.published);
+    dispatch(updateSingleQuiz({ ...quiz, published: !quiz.published }))
   };
+
+  console.log("title", quiz);
 
   return (
     <div className="flex-fill">
@@ -65,8 +53,8 @@ function QuizDetail() {
           className="btn btn-secondary btn-md ps-2 ms-2"
           onClick={handleTogglePublish}
         >
-          {quizList[0]?.published ? "Unpublish" : "Publish"}{" "}
-          {quizList[0]?.published ? <FaBan /> : <FaCheckCircle />}
+          {quiz.published ? "Unpublish" : "Publish"}{" "}
+          {quiz.published ? <FaBan /> : <FaCheckCircle />}
         </Link>
 
         <Link
@@ -111,7 +99,7 @@ function QuizDetail() {
         </div>
         <div className="col-sm-1 col-md-2">
           {quiz.quizType}
-        
+
         </div>
       </div>
 
@@ -147,8 +135,8 @@ function QuizDetail() {
           <b>Shuffle Answers</b>
         </div>
         <div className="col-sm-1 col-md-2">
-  {quiz.shuffleAnswers ? 'Yes' : 'No'}
-</div>
+          {quiz.shuffleAnswers ? 'Yes' : 'No'}
+        </div>
       </div>
 
       <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
@@ -171,7 +159,7 @@ function QuizDetail() {
           <b>Multiple Attempts</b>
         </div>
         <div className="col-sm-1 col-md-2">
-        {quiz.multipleAttempts ? 'No' : 'Yes'}
+          {quiz.multipleAttempts ? 'No' : 'Yes'}
         </div>
       </div>
 
@@ -207,7 +195,7 @@ function QuizDetail() {
           <b>One Question at a Time</b>
         </div>
         <div className="col-sm-1 col-md-2">
-        {quiz.oneQuestion ? 'Yes' : 'No'}
+          {quiz.oneQuestion ? 'Yes' : 'No'}
         </div>
       </div>
 
@@ -243,7 +231,7 @@ function QuizDetail() {
           <b>Webcam Required</b>
         </div>
         <div className="col-sm-1 col-md-2">
-        {quiz.oneQuestion ? 'No' : 'Yes'}
+          {quiz.oneQuestion ? 'No' : 'Yes'}
         </div>
       </div>
 
@@ -255,7 +243,7 @@ function QuizDetail() {
           <b>Lock Questions After Answering</b>
         </div>
         <div className="col-sm-1 col-md-2">
-        {quiz.lockQuestion ? 'No' : 'Yes'}
+          {quiz.lockQuestion ? 'No' : 'Yes'}
         </div>
       </div>
       <table className="table">
