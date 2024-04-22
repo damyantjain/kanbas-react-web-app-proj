@@ -41,6 +41,10 @@ function QuestionEditor() {
     //navigate back to the question list
   };
 
+  const cancelQues = () => {
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor/questions`);
+  }
+
   const checkType = () => {
     let temp = <></>;
     if (questionType.includes("MultipleChoice")) {
@@ -56,44 +60,44 @@ function QuestionEditor() {
   return (
     <div>
       <div className="col d-flex align-items-center">
-  <input
-    className="form-control me-2"
-    type="text"
-    placeholder="Question Name"
-    style={{ width: "200px" }}
-    value={question.title}
-    onChange={(e) => {
-      dispatch(setQuestion({ ...question, title: e.target.value }));
-    }}
-  />
-  <select
-    className="form-control me-2"
-    value={questionType}
-    style={{ width: "200px" }}
-    onChange={(e) => {
-      console.log("Hello");
-      setQuestionType(e.target.value);
-      dispatch(setQuestion({ ...question, type: e.target.value }));
-      dispatch(setQuestion({ ...question, options: [] }));
-    }}
-  >
-    <option value="MultipleChoice">Multiple Choice</option>
-    <option value="TrueFalse">True/False</option>
-    <option value="FillBlank">Fill in the Blank</option>
-  </select>
-  <span className="float-end" style={{ fontSize: "20px", fontWeight: "bold", marginRight: "10px", marginLeft: "550px" }}>
-    pts:
-  </span>
-  <input
-    value={question.points}
-    onChange={(e) => {
-      dispatch(setQuestion({ ...question, points: e.target.value }));
-    }}
-    className="form-control"
-    style={{ width: "50px" }}
-    type="number"
-  />
-</div>
+        <input
+          className="form-control me-2"
+          type="text"
+          placeholder="Question Name"
+          style={{ width: "200px" }}
+          value={question.title}
+          onChange={(e) => {
+            dispatch(setQuestion({ ...question, title: e.target.value }));
+          }}
+        />
+        <select
+          className="form-control me-2"
+          value={questionType}
+          style={{ width: "200px" }}
+          onChange={(e) => {
+            console.log("Hello");
+            setQuestionType(e.target.value);
+            dispatch(setQuestion({ ...question, type: e.target.value }));
+            dispatch(setQuestion({ ...question, options: [] }));
+          }}
+        >
+          <option value="MultipleChoice">Multiple Choice</option>
+          <option value="TrueFalse">True/False</option>
+          <option value="FillBlank">Fill in the Blank</option>
+        </select>
+        <span className="float-end" style={{ fontSize: "20px", fontWeight: "bold", marginRight: "10px", marginLeft: "550px" }}>
+          pts:
+        </span>
+        <input
+          value={question.points}
+          onChange={(e) => {
+            dispatch(setQuestion({ ...question, points: e.target.value }));
+          }}
+          className="form-control"
+          style={{ width: "50px" }}
+          type="number"
+        />
+      </div>
 
       <hr />
       <p>
@@ -121,7 +125,7 @@ function QuestionEditor() {
       )}
 
       <br />
-      <Button className="btn btn-secondary">Cancel</Button>
+      <Button className="btn btn-secondary" onClick={()=>{cancelQues()}}>Cancel</Button>
       <Button onClick={() => updateQues()} className="btn btn-danger ms-2">
         Update Question
       </Button>

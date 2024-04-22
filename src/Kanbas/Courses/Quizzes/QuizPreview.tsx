@@ -93,9 +93,9 @@ function QuizPreview() {
     <div className="container-fluid" style={{ marginTop: "20px", marginLeft: "25px", marginRight: "20px", width: "1000px" }}>
       <h1>{quiz?.title}</h1>
 
-      <h5 style={{ paddingRight: "100px" }} className="preview-msg">
+      <h6 style={{ paddingRight: "100px" }} className="preview-msg">
         <CgDanger /> This is a preview of the published version of the quiz
-      </h5>
+      </h6>
 
       <div>
         <h6>Started: {formatDate(quiz?.availableFromDate)} at {formatTime(quiz?.availableFromDate)}</h6>

@@ -1,7 +1,7 @@
 import { BsTrash3Fill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { KanbasState } from "../../../../../store";
-import { addOption, updateOption } from "../reducer";
+import { addOption, updateOption,deleteOption } from "../reducer";
 import { useEffect } from "react";
 
 function MultipleChoiceQuestion() {
@@ -11,8 +11,8 @@ function MultipleChoiceQuestion() {
     (state: KanbasState) => state.questionsReducer.question
   );
 
-  const deleteOption = (id: number) => {
-    console.log("delete option", id);
+  const deleteOpt = (id: number) => {
+    dispatch(deleteOption(id));
   };
 
   return (
@@ -27,7 +27,7 @@ function MultipleChoiceQuestion() {
               dispatch(updateOption({ ...option, option: e.target.value }))
             }
           />
-          <button className="btn" onClick={() => deleteOption(option.id)}>
+          <button className="btn" onClick={() => deleteOpt(option.id)}>
             <BsTrash3Fill />
           </button>
         </div>

@@ -22,17 +22,21 @@ import {
 } from "./reducer";
 import { KanbasState } from "./../../store";
 
+type MenuVisibleState = {
+  [key: string]: boolean;
+};
+
 function QuizList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { courseId } = useParams();
 
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState<MenuVisibleState>({});
   /// const [published, setPublished] = useState(false); // State to track the published status
 
   const navigateToAddQuiz = () => {
     dispatch(clearQuiz());
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor`);
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor/QuizEditor/details`);
   };
 
   const handleDelete = () => {
@@ -49,6 +53,14 @@ function QuizList() {
   const quizList = useSelector(
     (state: KanbasState) => state.quizReducer.quizzes
   );
+
+  const formatDate = (dateString: string | number | Date) => {
+    return new Date(dateString).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
 
   const handleDeleteQuiz = async (quizId: string) => {
     const res = await client.deleteQuiz(quizId);
@@ -68,12 +80,13 @@ function QuizList() {
         published: !qz.published,
       })
     );
-    console.log("Publishing or Unpublishing the quiz");
-    console.log(qz.published);
   };
 
-  const toggleMenu = () => {
-    setMenuVisible((prev) => !prev);
+  const toggleMenu = (quiz: any) => {
+    setMenuVisible((prev) => ({
+      ...prev,
+      [quiz._id]: !prev[quiz._id]
+    }));
   };
 
   useEffect(() => {
@@ -82,23 +95,16 @@ function QuizList() {
     });
   }, [courseId]);
 
-  const handleDueDate = (qz : any) => {
-    if (qz.dueDate && qz.dueDate !== "") {
-      qz.dueDate = new Date(qz.dueDate)
-        .toISOString()
-        .split("T")[0];
+  const handleAvailabiltiy = (quiz : any) => {
+    if (quiz.availableUntilDate && formatDate(new Date()) > quiz.availableUntilDate) {
+      return 'Closed';
+    } else if (quiz.availableFromDate && quiz.availableUntilDate && formatDate(new Date()) >= quiz.availableFromDate && formatDate(new Date()) <= quiz.availableUntilDate) {
+      return 'Available';
+    } else if (quiz.availableFromDate && formatDate(new Date()) < quiz.availableFromDate) {
+      return `Not available until ${formatDate(quiz.availableFromDate)}`; // Use toDateString() for a readable format
+    } else {
+      return 'Not available';
     }
-    if (qz.availableFromDate && qz.availableFromDate !== "") {
-      qz.availableFromDate = new Date(qz.availableFromDate)
-        .toISOString()
-        .split("T")[0];
-    }
-    if (qz.availableUntilDate && qz.availableUntilDate !== "") {
-      qz.availableUntilDate = new Date(qz.availableUntilDate)
-        .toISOString()
-        .split("T")[0];
-    }
-    return qz.dueDate;
   }
 
 
@@ -144,6 +150,10 @@ function QuizList() {
               <b>Assignment Quizzes</b>
             </div>
           </li>
+            {(quizList.length === 0 ||  quizList === null ) ? 
+            (<div style = {{borderStyle: "solid", textAlign: "center", marginTop: "10px", marginLeft: "200px", marginRight: "200px"}}>
+              No quizzes available. Click on Add Quiz Button to create a quiz.
+            </div>) : (
           <ul className="list-group" style={{ borderRadius: "0%" }}>
             {quizList.map((quiz) => (
               <li className="list-group-item">
@@ -165,7 +175,7 @@ function QuizList() {
                       {quiz.title}
                     </Link>
                     <br />
-                    {quiz.availability} |<b> Due</b> {quiz.dueDate} |{" "}
+                    {handleAvailabiltiy(quiz)} |<b> Due</b> {formatDate(quiz.dueDate)} |{" "}
                     {quiz.points} pts | {quiz.numberOfQuestions} Questions
                     {/* Sep 21 at 1pm | 29 pts | 11 questions */}
                   </div>
@@ -206,9 +216,9 @@ function QuizList() {
                           className="ms-4"
                           role="button"
                           style={{ verticalAlign: "middle" }}
-                          onClick={toggleMenu}
+                          onClick={() => toggleMenu(quiz)}
                         />
-                        {menuVisible && (
+                        {menuVisible[quiz._id] && (
                           <div
                             className="menu"
                             style={{
@@ -220,6 +230,7 @@ function QuizList() {
                               backgroundColor: "white",
                               padding: "8px",
                               opacity: 0.9,
+                              zIndex: 1000,
                             }}
                           >
                             <option onClick={handleEditQuiz}>Edit</option>
@@ -246,7 +257,7 @@ function QuizList() {
                 </div>
               </li>
             ))}
-          </ul>
+          </ul> ) }
         </ul>
       </div>
     </div>
