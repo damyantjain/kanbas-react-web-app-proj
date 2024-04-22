@@ -8,7 +8,7 @@ interface Quiz {
   _id: string;
   quizType: string;
   assignmentGroup: string;
-
+  instructions: string;
   shuffleAnswers: boolean;
   timeLimit: String;
   multipleAttempts: boolean;
@@ -16,9 +16,7 @@ interface Quiz {
   oneQuestion: boolean;
   webcam: boolean;
   lockQuestion: boolean;
-
   accessCode: String;
-
   numberOfQuestions: string;
   availableFromDate: string;
   availableUntilDate: string;
@@ -36,7 +34,7 @@ const initialState = {
     points: "100",
     quizType: "Graded Quiz",
     assignmentGroup: "Quizzes",
-
+    instructions: "",
     shuffleAnswers: true,
     timeLimit: "20",
     multipleAttempts: false,
