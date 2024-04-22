@@ -37,34 +37,7 @@ const TextEditor: React.FC <TextEditorProps> = ({ textData }) => {
   
 
   const dispatch = useDispatch();
-//const textBox = useSelector((state: KanbasState) => state.textBoxReducer.textBox);
-const initial = useSelector((state: KanbasState) => textData);
-const [textValue, setTextValue] = useState(initial);
-
-
-
-
-
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = event.target.value;
-    setTextValue(newText);
-    // Dispatch action to update Redux store if needed
-    dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
-  };
-
-
-useEffect(() => {
-  setTextValue(initial);
-}, []); 
-
-useEffect(() => {
-  if (initial) setTextValue(initial); // Update local state when the Redux store updates
-}, [initial]);
-
-
-console.log("text data:",initial)
-
-
+const textBox = useSelector((state: KanbasState) => state.textBoxReducer.textBox);
 
 
   //const dispatch = useDispatch();
@@ -217,7 +190,7 @@ console.log("text data:",initial)
           <br />
 
           <textarea
-            value={textValue}
+            value={textBox.text}
             onChange={(e) => {
               dispatch(setText(e.target.value));
             }}

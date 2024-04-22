@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { KanbasState } from "../../../../store";
 import * as client from "../../client";
 import { setQuiz, setQuizzes } from "../../reducer";
+import { setText } from "../../../../Common/TextBox/reducer";
 import Quiz from "../..";
 import { useEffect } from "react";
 
@@ -19,6 +20,7 @@ function QuizDetail() {
   useEffect(() => {
     const quizDataMain = quizList.find((q) => q._id === quizId);
     const quizData = { ...quizDataMain };
+    dispatch(setText(quizData.instructions))
     if (quizData.availableFromDate && quizData.availableFromDate !== "") {
       quizData.availableFromDate = new Date(quizData.availableFromDate)
         .toISOString()
