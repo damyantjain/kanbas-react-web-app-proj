@@ -32,3 +32,7 @@ export const deleteQuiz = async (quizId: string) => {
   const response = await axios.delete(`${QUIZZES_API}/${quizId}`);
   return response.data;
 };
+export function getQuestionById(quizId: string | undefined) {
+  throw new Error("Function not implemented.");
+}
+
