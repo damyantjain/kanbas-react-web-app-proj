@@ -6,6 +6,7 @@ import { setQuestions, setQuestion, resetQuestion, deleteQuestion } from "./redu
 import { useDispatch, useSelector } from "react-redux";
 import { KanbasState } from "../../../../store";
 import { BsTrash3Fill } from "react-icons/bs";
+import { setText } from "../../../../Common/TextBox/reducer";
 
 function QuizQuestion() {
   const navigate = useNavigate();
@@ -23,11 +24,13 @@ function QuizQuestion() {
       title: "New Question",
       quizId: quizId,
       points: 0,
+      question: "",
       type: "MultipleChoice",
       option: [],
     };
     //const res = await client.createQuestion(quizId, newReq);
     dispatch(setQuestion(newReq));
+    dispatch(setText(newReq.question));
     dispatch(setQuestions([...questionList, newReq]));
     navigate(
       `/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor/questions/${newReq.id}`
@@ -47,6 +50,7 @@ function QuizQuestion() {
   const assignQues = (ques: any) => {
     console.log("Assigning Question ", ques);
     dispatch(setQuestion(ques));
+    dispatch(setText(ques.question));
     console.log("Question ", question);
   };
 

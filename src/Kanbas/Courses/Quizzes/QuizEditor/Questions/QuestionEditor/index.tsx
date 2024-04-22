@@ -7,7 +7,12 @@ import { Button } from "react-bootstrap";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuestions, setQuestion, addOption, updateQuestion } from "../reducer";
+import {
+  setQuestions,
+  setQuestion,
+  addOption,
+  updateQuestion,
+} from "../reducer";
 import { KanbasState } from "../../../../../store";
 import * as client from "../client";
 
@@ -23,10 +28,18 @@ function QuestionEditor() {
     (state: KanbasState) => state.questionsReducer.question
   );
 
+  const textBox = useSelector(
+    (state: KanbasState) => state.textBoxReducer.textBox
+  );
+
   useEffect(() => {
     //setQuestionType(question.type);
     checkType();
   }, [questionType]);
+
+  useEffect(() => {
+    dispatch(setQuestion({ ...question, question: textBox.text }));
+  }, [textBox]);
 
   useEffect(() => {
     console.log("Question Updated", question);
@@ -37,7 +50,9 @@ function QuestionEditor() {
   const updateQues = () => {
     dispatch(updateQuestion(question));
     //var response = await client.updateQuestion(question);
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor/questions`);
+    navigate(
+      `/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor/questions`
+    );
     //navigate back to the question list
   };
 
@@ -85,7 +100,15 @@ function QuestionEditor() {
           <option value="TrueFalse">True/False</option>
           <option value="FillBlank">Fill in the Blank</option>
         </select>
-        <span className="float-end" style={{ fontSize: "20px", fontWeight: "bold", marginRight: "10px", marginLeft: "550px" }}>
+        <span
+          className="float-end"
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginRight: "10px",
+            marginLeft: "550px",
+          }}
+        >
           pts:
         </span>
         <input
@@ -108,7 +131,7 @@ function QuestionEditor() {
         their answer.
       </p>
       <h2>Question:</h2>
-      {/* <TextBox/> */}
+      <TextBox textData={question?.question}/>
       {currentQuestionType}
       {!questionType.includes("TrueFalse") && (
         <div className="float-end me-2">
