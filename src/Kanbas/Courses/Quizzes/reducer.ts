@@ -72,6 +72,10 @@ const quizzesSlice = createSlice({
       });
     },
 
+    updateSingleQuiz:(state,action)=>{
+      state.quiz = action.payload
+    },
+
     deleteQuiz: (state, action) => {
       state.quizzes = state.quizzes.filter(
         (quiz) => quiz._id !== action.payload
@@ -97,5 +101,6 @@ export const {
   clearQuiz,
   setQuiz,
   setQuizzes,
+  updateSingleQuiz
 } = quizzesSlice.actions;
 export default quizzesSlice.reducer;
