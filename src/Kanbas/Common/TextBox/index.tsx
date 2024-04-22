@@ -36,21 +36,10 @@ const TextEditor: React.FC <TextEditorProps> = ({ textData }) => {
   const [wordCount, setWordCount] = useState(0);
   
 
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
 //const textBox = useSelector((state: KanbasState) => state.textBoxReducer.textBox);
 const initial = useSelector((state: KanbasState) => textData);
 const [textValue, setTextValue] = useState(initial);
-
-
-
-
-
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = event.target.value;
-    setTextValue(newText);
-    // Dispatch action to update Redux store if needed
-    dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
-  };
 
 
 useEffect(() => {

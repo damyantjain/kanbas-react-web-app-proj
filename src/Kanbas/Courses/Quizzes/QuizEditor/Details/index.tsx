@@ -9,6 +9,7 @@ import { useEffect } from "react";
 
 function QuizDetail() {
   const { quizId } = useParams();
+  //const { courseId } = useParams();
   const dispatch = useDispatch();
   const quizList = useSelector(
     (state: KanbasState) => state.quizReducer.quizzes
@@ -16,8 +17,11 @@ function QuizDetail() {
   
   const quiz = useSelector((state: KanbasState) => state.quizReducer.quiz);
 
+  
+
   useEffect(() => {
     const quizDataMain = quizList.find((q) => q._id === quizId);
+    dispatch(setQuiz(quizDataMain));
     const quizData = { ...quizDataMain };
     if (quizData.availableFromDate && quizData.availableFromDate !== "") {
       quizData.availableFromDate = new Date(quizData.availableFromDate)
