@@ -44,7 +44,7 @@ function Kanbas() {
       })
     );
   };
-  const API_BASE = "http://localhost:4000";
+  const API_BASE = process.env.REACT_APP_API_BASE
   const COURSES_API = `${API_BASE}/api/courses`;
   const findAllCourses = async () => {
     const response = await axios.get(COURSES_API);

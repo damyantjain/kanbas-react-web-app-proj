@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_API = "http://localhost:4000";
+const BASE_API = process.env.REACT_APP_API_BASE;
 export const USERS_API = `${BASE_API}/api/users`;
 export interface User {
   _id: string;
