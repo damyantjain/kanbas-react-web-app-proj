@@ -7,6 +7,7 @@ import { setQuiz, setQuizzes } from "../../reducer";
 import { setText } from "../../../../Common/TextBox/reducer";
 import Quiz from "../..";
 import { useEffect } from "react";
+import * as quizClient from "../../client"
 
 function QuizDetail() {
   const { quizId } = useParams();
@@ -20,21 +21,28 @@ function QuizDetail() {
   useEffect(() => {
     const quizDataMain = quizList.find((q) => q._id === quizId);
     const quizData = { ...quizDataMain };
-    dispatch(setText(quizData.instructions))
-    if (quizData.availableFromDate && quizData.availableFromDate !== "") {
-      quizData.availableFromDate = new Date(quizData.availableFromDate)
-        .toISOString()
-        .split("T")[0];
+    
+   
+    
+    const fetchCurrentQuestion = async () =>{
+      let res = await quizClient.findQuizById(quizId);
+      if (res.availableFromDate && res.availableFromDate !== "") {
+        res.availableFromDate = new Date(res.availableFromDate)
+          .toISOString()
+          .split("T")[0];
+      }
+      if (res.availableUntilDate && res.availableUntilDate !== "") {
+        res.availableUntilDate = new Date(res.availableUntilDate)
+          .toISOString()
+          .split("T")[0];
+      }
+      if (res.dueDate && res.dueDate !== "") {
+        res.dueDate = new Date(res.dueDate).toISOString().split("T")[0];
+      }
+      dispatch(setQuiz(res));
+      dispatch(setText(res.instructions))
     }
-    if (quizData.availableUntilDate && quizData.availableUntilDate !== "") {
-      quizData.availableUntilDate = new Date(quizData.availableUntilDate)
-        .toISOString()
-        .split("T")[0];
-    }
-    if (quizData.dueDate && quizData.dueDate !== "") {
-      quizData.dueDate = new Date(quizData.dueDate).toISOString().split("T")[0];
-    }
-    dispatch(setQuiz(quizData));
+    fetchCurrentQuestion();
   }, [dispatch, quizId]);
 
   return (

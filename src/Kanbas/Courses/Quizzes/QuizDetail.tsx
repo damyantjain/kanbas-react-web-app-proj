@@ -3,10 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { KanbasState } from "../../store";
-import { updateSingleQuiz } from "./reducer";
+import { setQuiz, updateSingleQuiz } from "./reducer";
 import { useEffect } from "react";
 import * as client from "./QuizEditor/Questions/client";
-import { setQuestions } from "./QuizEditor/Questions/reducer";
+import { setQuestions, setQuestion } from "./QuizEditor/Questions/reducer";
+import * as quizClient from "./client";
 
 function QuizDetail() {
   const { courseId } = useParams();
@@ -30,12 +31,20 @@ function QuizDetail() {
     });
   };
 
+ 
+
   useEffect(() => {
     const fetchQuestions = async () => {
       const questions = await client.getAllQuestions(quizId);
       dispatch(setQuestions(questions));
     };
+    const fetchCurrentQuestion = async () =>{
+      const res = await quizClient.findQuizById(quizId);
+      console.log("curr ques",res);
+      dispatch(setQuiz(res));
+    }
     fetchQuestions();
+    fetchCurrentQuestion();
   }, [quizId]);
 
   const handleTogglePublish = () => {
