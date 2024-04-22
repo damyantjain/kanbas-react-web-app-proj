@@ -3,7 +3,7 @@ import TextEditor from "../../../../Common/TextBox";
 import { useSelector, useDispatch } from "react-redux";
 import { KanbasState } from "../../../../store";
 import * as client from "../../client";
-import { setQuiz } from "../../reducer";
+import { setQuiz, setQuizzes } from "../../reducer";
 import Quiz from "../..";
 import { useEffect } from "react";
 
@@ -64,7 +64,7 @@ function QuizDetail() {
           />
           <br />
 
-          <TextEditor />
+          <TextEditor textData={quiz?.instructions}/>
 
           <br />
 

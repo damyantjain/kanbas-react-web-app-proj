@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import { FaBold } from "react-icons/fa6";
 import { GoItalic } from "react-icons/go";
@@ -16,8 +16,14 @@ import { Link } from "react-router-dom";
 import { KanbasState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setText } from "./reducer";
+import { text } from "stream/consumers";
 
-const TextEditor: React.FC = () => {
+interface TextEditorProps {
+  textData: string; // Define a prop for the API endpoint
+}
+
+
+const TextEditor: React.FC <TextEditorProps> = ({ textData }) => {
   const [fontSize, setFontSize] = useState("16px");
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -28,12 +34,40 @@ const TextEditor: React.FC = () => {
   const highlightColorPickerRef = useRef<HTMLInputElement>(null);
   const [isSuperscript, setIsSuperscript] = useState(false);
   const [wordCount, setWordCount] = useState(0);
-
-  const textBox = useSelector(
-    (state: KanbasState) => state.textBoxReducer.textBox
-  );
+  
 
   const dispatch = useDispatch();
+//const textBox = useSelector((state: KanbasState) => state.textBoxReducer.textBox);
+const initial = useSelector((state: KanbasState) => textData);
+const [textValue, setTextValue] = useState(initial);
+
+
+
+
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = event.target.value;
+    setTextValue(newText);
+    // Dispatch action to update Redux store if needed
+    dispatch(setText({ instructions: newText, bold: isBold, italic: isItalic, underline: isUnderline }));
+  };
+
+
+useEffect(() => {
+  setTextValue(initial);
+}, []); 
+
+useEffect(() => {
+  if (initial) setTextValue(initial); // Update local state when the Redux store updates
+}, [initial]);
+
+
+console.log("text data:",initial)
+
+
+
+
+  //const dispatch = useDispatch();
   const toggleBold = () => {
     setIsBold(!isBold);
   };
@@ -181,8 +215,9 @@ const TextEditor: React.FC = () => {
             </span>
           </div>
           <br />
+
           <textarea
-            value={textBox.text}
+            value={textValue}
             onChange={(e) => {
               dispatch(setText(e.target.value));
             }}
