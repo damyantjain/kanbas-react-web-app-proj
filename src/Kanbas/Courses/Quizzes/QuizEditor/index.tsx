@@ -41,8 +41,10 @@ function QuizEditor() {
     const res = await questionsClient.updateAllQuestions(quizId, questionList);
   };
 
-  const handleSaveAndPublish = () => {
+  const handleSaveAndPublish = async() => {
     handleAddingNew();
+    await updateQuestions();
+    quiz.published = true;
     navigate(`/Kanbas/Courses/${courseId}/quizzes`);
   };
 
